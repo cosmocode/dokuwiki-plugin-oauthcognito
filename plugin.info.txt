@@ -1,0 +1,7 @@
+base   oauthcognito
+author Andreas Gohr, Anna Dabrowska
+email  dokuwiki@cosmocode.de
+date   2021-12-14
+name   oauth Amazon Cognito Service
+desc   Amazon Cognito Service for use with the oAuth Plugin
+url    http://www.dokuwiki.org/plugin:oauthcognito
