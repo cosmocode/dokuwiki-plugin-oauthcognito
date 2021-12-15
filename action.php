@@ -26,8 +26,8 @@ class action_plugin_oauthcognito extends Adapter
         $raw = $oauth->request($url);
         $result = json_decode($raw, true);
 
-        $data['user'] = 'cognito-' . $result['preferred_username'];
-        $data['name'] = 'cognito-' . $result['name'];
+        $data['user'] = $result['username'];
+        $data['name'] = $result['username'];
         $data['mail'] = $result['email'];
 
         return $data;
