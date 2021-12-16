@@ -21,14 +21,19 @@ class action_plugin_oauthcognito extends Adapter
         $oauth = $this->getOAuthService();
         $data = array();
 
-        $url = $this->getConf('baseurl') . '/oauth2/userInfo';
+        $tokenExtras = $oauth->getStorage()->retrieveAccessToken($oauth->service())->getExtraParams();
+        $idToken = $tokenExtras['id_token'] ?? '';
 
-        $raw = $oauth->request($url);
-        $result = json_decode($raw, true);
+        $decodedObj = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $idToken)[1]))));
+        $result = (array)$decodedObj;
 
-        $data['user'] = $result['preferred_username'] ?? $result['username'];
+        $data['user'] = $result['preferred_username'] ?? $result['cognito:username'];
         $data['name'] = $result['name'] ?? $data['user'];
         $data['mail'] = $result['email'];
+
+        if (isset($result['cognito:groups'])) {
+            $data['grps'] = $result['cognito:groups'];
+        }
 
         return $data;
     }
